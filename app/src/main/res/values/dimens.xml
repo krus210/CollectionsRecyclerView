@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="margin_between_text_and_icon">5dp</dimen>
+    <dimen name="margin_gap_between_icons">32dp</dimen>
+    <dimen name="size_text_of_post">18sp</dimen>
+    <dimen name="size_icon">48dp</dimen>
+    <dimen name="size_date">10sp</dimen>
+    <dimen name="margin_beyond_text_and_avatar_photo">24dp</dimen>
+    <dimen name="margin_between_date_and_name_author">10dp</dimen>
+</resources>

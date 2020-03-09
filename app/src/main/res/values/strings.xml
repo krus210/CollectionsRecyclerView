@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CollectionsRecyclerView</string>
+    <string name="text_of_post">First post in our network!</string>
+    <string name="date">20 august 2019</string>
+    <string name="two">2</string>
+    <string name="eight">8</string>
+    <string name="fifty">50</string>
+    <string name="netology">Netology</string>
+    <string name="post_text1">Это исследовательская задача, направленная на приобретение навыков
+        работы с документацией Android и анализа чужих приложений.
+        Пока мы сами не умеем проигрывать видео, но, как вы наверное догадались,
+        мы можем подключить другие приложения для его проигрывания.</string>
+    <string name="post_date1">February 19th, 2020</string>
+    <string name="name_author">Королев Станислав Сергеевич Королев Станислав Сергеевич
+        Сергеевич Королев Станислав Сергеевич Сергеевич Королев Станислав Сергеевич
+        Сергеевич Королев Станислав Сергеевич</string>
+    <string name="post_text2">Hi, there</string>
+    <string name="post_date2">March 1st, 2020</string>
+    <string name="post_text3">My name is Stas</string>
+    <string name="post_date3">March 3rd, 2020</string>
+    <string name="post_text4">Spring is coming!</string>
+    <string name="post_date4">March 4th, 2020</string>
+    <string name="snippet">snippet</string>
+    <string name="repost_from">Repost from:</string>
+    <string name="ad_post">Рекламная запись</string>
+    <string name="hi_from_jack">Hi from Jack!</string>
+    <string name="post_date5">8th of March, 2020</string>
+    <string name="post_text5">Whether on Google</string>
+    <string name="post_text10">Hi from Jack</string>
+    <string name="post_date10">7th of March, 2020</string>
+    <string name="name_author2">Lack Russel</string>
+    <string-array name="spinner_array">
+        <item>Сохранить в закладках</item>
+        <item>Это не интересно</item>
+    </string-array>
+</resources>
