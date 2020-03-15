@@ -6,80 +6,53 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.ktor.client.HttpClient
+import io.ktor.client.features.json.GsonSerializer
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.request.get
+import io.ktor.http.ContentType
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.post_card.*
+import kotlinx.coroutines.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),CoroutineScope by MainScope() {
 
+    private val url =
+        "https://raw.githubusercontent.com/krus210/GsonSerialization/master/posts.json"
+
+    @KtorExperimentalAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var list = createList()
 
-        with(container) {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = PostAdapter(list)
+        val client = HttpClient {
+            install(JsonFeature) {
+                acceptContentTypes = listOf(
+                    ContentType.Text.Plain,
+                    ContentType.Application.Json
+                )
+                serializer = GsonSerializer()
+            }
         }
 
+        launch {
+            val list = withContext(Dispatchers.IO) {
+                client.get<MutableList<Post>>(url)
+            }
+            with(container) {
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter = PostAdapter(list)
+            }
+            determinateBar.visibility = View.GONE
+        }
+
+//        client.close()
     }
 
-    private fun createList() = mutableListOf(
-            Post(
-                1,
-                getString(R.string.post_text1),
-                getString(R.string.post_date1),
-                getString(R.string.name_author),
-                R.drawable.photo_author,
-                commentsCount = 5,
-                sharesCount = 1,
-                likesCount = 3,
-                isLikedByUser = true
-            ),
-            Post(
-                2,
-                getString(R.string.post_text2),
-                getString(R.string.post_date2),
-                getString(R.string.name_author),
-                R.drawable.photo_author,
-                commentsCount = 1,
-                address = "Россия, Москва, улица Покровка, 29с1, подъезд 2",
-                coordinates = Pair("55.760029", "37.648548"),
-                postType = PostType.EVENT
-            ),
-            Post(
-                3,
-                getString(R.string.post_text3),
-                getString(R.string.post_date3),
-                getString(R.string.name_author),
-                R.drawable.photo_author,
-                sharesCount = 3,
-                likesCount = 11,
-                isLikedByUser = true,
-                sourceVideo = "Qjf6kBmLilo",
-                postType = PostType.YOUTUBE
-            ),
-            Post(
-                4,
-                dateOfPost = getString(R.string.post_date4),
-                nameAuthor = getString(R.string.name_author),
-                photoAuthor = R.drawable.photo_author,
-                source = Post(
-                    10,
-                    getString(R.string.post_text10),
-                    getString(R.string.post_date10),
-                    getString(R.string.name_author2)
-                ),
-                postType = PostType.REPOST
-            ),
-            Post(
-                5,
-                getString(R.string.post_text5),
-                getString(R.string.post_date5),
-                getString(R.string.name_author),
-                R.drawable.photo_author,
-                likesCount = 10,
-                sourceAd = "https://weather.com/weather/today/l/55.79,37.36?par=google&temp=c",
-                postType = PostType.AD_POST
-            )
-        )
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
+    }
 }
