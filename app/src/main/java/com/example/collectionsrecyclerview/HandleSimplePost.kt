@@ -1,41 +1,50 @@
 package com.example.collectionsrecyclerview
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.view.LayoutInflater
+import android.provider.Settings.Global.getString
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.post_card.view.*
 
-class PostAdapter(var list: MutableList<Post>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+interface HandleSimplePost {
+    fun fillPostCard(view: View, post: Post) {
+        with(view) {
+            textViewDate.text = post.dateOfPost
+            textViewAuthor.text = post.nameAuthor
+            if (post.photoAuthor != null) {
+                imageViewAvatar.setImageResource(post.photoAuthor)
+            }
+            fillCount(textViewShareCount, post.sharesCount)
+            fillCount(textViewCommentCount, post.commentsCount)
+            fillCount(textViewLikeCount, post.likesCount)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.post_card, parent, false)
-        return PostViewHolder(this, view, list)
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        with(holder as PostViewHolder) {
-            bind(list[position])
+            isCheckedByUser(
+                imageButtonShare, textViewShareCount,
+                post.isSharedByUser, R.drawable.ic_share_red, context
+            )
+            isCheckedByUser(
+                imageButtonComment, textViewCommentCount,
+                post.isCommentedByUser, R.drawable.ic_comment_red, context
+            )
+            isCheckedByUser(
+                imageButtonLike, textViewLikeCount,
+                post.isLikedByUser, R.drawable.ic_like_red, context
+            )
         }
     }
-}
 
-class PostViewHolder(
-    private val adapter: PostAdapter, private val view: View, var list: MutableList<Post>
-) : RecyclerView.ViewHolder(view) {
-    init {
-//        val handlePost = HandlePost
-//        handlePost.clickButtonListener(view, adapter, list, adapterPosition)
+    fun clickButtonListener(
+        view: View,
+        adapter: PostAdapter,
+        list: MutableList<Post>,
+        adapterPosition: Int
+    ) {
         with(view) {
             imageButtonLike.setOnClickListener {
                 it as ImageButton
@@ -144,18 +153,43 @@ class PostViewHolder(
         }
     }
 
-    fun bind(post: Post) {
-        val handlePost = getHandlePostFromType(post)
-        handlePost.fillPostCard(view, post)
-    }
-
-    private fun getHandlePostFromType(item: Post) = when (item.postType) {
-        PostType.EVENT -> HandleEvent
-        PostType.REPOST -> HandleRepost
-        PostType.YOUTUBE -> HandleYoutube
-        PostType.AD_POST -> HandleAd
-        else -> HandlePost
-    }
-
 }
 
+fun fillCount(view: TextView, count: Int) {
+    if (count == 0) {
+        view.visibility = View.INVISIBLE
+    } else {
+        view.visibility = View.VISIBLE
+        view.text = count.toString()
+    }
+}
+
+fun isCheckedByUser(
+    imageView: ImageButton,
+    textView: TextView,
+    isChecked: Boolean,
+    imageRed: Int,
+    context: Context
+) {
+    if (isChecked) {
+        imageView.setImageResource(imageRed)
+        textView.setTextColor(getColor(context, R.color.colorRed))
+    }
+}
+
+fun isCheckedByUser(
+    imageView: ImageButton,
+    textView: TextView,
+    isChecked: Boolean,
+    imageRed: Int,
+    imageGray: Int,
+    context: Context
+) {
+    if (isChecked) {
+        imageView.setImageResource(imageRed)
+        textView.setTextColor(getColor(context, R.color.colorRed))
+    } else {
+        imageView.setImageResource(imageGray)
+        textView.setTextColor(getColor(context, android.R.color.tab_indicator_text))
+    }
+}

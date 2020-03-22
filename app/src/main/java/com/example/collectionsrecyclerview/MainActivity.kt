@@ -40,14 +40,13 @@ class MainActivity : AppCompatActivity(),CoroutineScope by MainScope() {
             val list = withContext(Dispatchers.IO) {
                 client.get<MutableList<Post>>(url)
             }
+            client.close()
             with(container) {
                 layoutManager = LinearLayoutManager(this@MainActivity)
                 adapter = PostAdapter(list)
             }
             determinateBar.visibility = View.GONE
         }
-
-//        client.close()
     }
 
 

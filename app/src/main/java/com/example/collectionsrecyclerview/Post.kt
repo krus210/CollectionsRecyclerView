@@ -1,6 +1,6 @@
 package com.example.collectionsrecyclerview
 
-data class Post(
+open class Post(
     val id: Int,
     val textOfPost: String? = null,
     val dateOfPost: String,
@@ -12,9 +12,11 @@ data class Post(
     var isLikedByUser: Boolean = false,
     var isCommentedByUser: Boolean = false,
     var isSharedByUser: Boolean = false,
-    val postType: PostType = PostType.POST,
+    open val postType: PostType = PostType.POST,
     val source: Post? = null,
     val address: String? = null,
     val coordinates: Pair<String, String>? = null,
     val sourceVideo: String? = null,
-    val sourceAd: String? = null)
+    val sourceAd: String? = null) {
+
+}

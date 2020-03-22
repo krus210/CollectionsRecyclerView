@@ -147,13 +147,27 @@
         android:layout_marginTop="@dimen/margin_between_text_and_icon"
         android:visibility="gone"/>
 
-    <Spinner
-        android:id="@+id/spinner"
+    <TextView
+        android:id="@+id/textViewDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="@string/delete"
         android:textSize="@dimen/size_date"
-        android:gravity="end"/>
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButtonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_delete"
+        android:layout_marginEnd="@dimen/margin_between_text_and_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewDelete"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDelete"
+        app:layout_constraintTop_toTopOf="@+id/textViewDelete" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

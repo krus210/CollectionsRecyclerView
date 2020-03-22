@@ -29,8 +29,6 @@
     <string name="post_text10">Hi from Jack</string>
     <string name="post_date10">7th of March, 2020</string>
     <string name="name_author2">Lack Russel</string>
-    <string-array name="spinner_array">
-        <item>Сохранить в закладках</item>
-        <item>Это не интересно</item>
-    </string-array>
+    <string name="delete">Это не интересно</string>
+    <string name="put_comment">Put comment successful!</string>
 </resources>
