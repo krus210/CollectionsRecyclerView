@@ -12,11 +12,15 @@ open class Post(
     var isLikedByUser: Boolean = false,
     var isCommentedByUser: Boolean = false,
     var isSharedByUser: Boolean = false,
-    open val postType: PostType = PostType.POST,
+    val postType: PostType = PostType.POST,
     val source: Post? = null,
     val address: String? = null,
     val coordinates: Pair<String, String>? = null,
     val sourceVideo: String? = null,
     val sourceAd: String? = null) {
 
+}
+
+enum class PostType {
+    POST, EVENT, REPOST, YOUTUBE, AD_POST
 }

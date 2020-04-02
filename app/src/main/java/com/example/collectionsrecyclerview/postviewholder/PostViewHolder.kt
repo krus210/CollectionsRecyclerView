@@ -1,19 +1,25 @@
-package com.example.collectionsrecyclerview
+package com.example.collectionsrecyclerview.postviewholder
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.provider.Settings.Global.getString
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.collectionsrecyclerview.*
 import kotlinx.android.synthetic.main.post_card.view.*
 
-interface HandleSimplePost {
-    fun fillPostCard(view: View, post: Post) {
+open class PostViewHolder(
+    val adapter: PostAdapter, val view: View, var list: MutableList<Post>
+) : RecyclerView.ViewHolder(view)  {
+
+    init {
+        this.clickButtonListener()
+    }
+
+    open fun bind(post: Post) {
         with(view) {
             textViewDate.text = post.dateOfPost
             textViewAuthor.text = post.nameAuthor
@@ -39,12 +45,7 @@ interface HandleSimplePost {
         }
     }
 
-    fun clickButtonListener(
-        view: View,
-        adapter: PostAdapter,
-        list: MutableList<Post>,
-        adapterPosition: Int
-    ) {
+    private fun clickButtonListener() {
         with(view) {
             imageButtonLike.setOnClickListener {
                 it as ImageButton
@@ -125,31 +126,6 @@ interface HandleSimplePost {
                     adapter.notifyDataSetChanged()
                 }
             }
-            imageButtonLocation.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = list[adapterPosition]
-                    val lat = item.coordinates?.first
-                    val lng = item.coordinates?.second
-                    val dataOfCoordinates = Uri.parse("geo:$lat,$lng")
-                    transitionToApp(context, dataOfCoordinates)
-                }
-            }
-            imageButtonLink.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = list[adapterPosition]
-                    if (item.postType == PostType.YOUTUBE) {
-                        val data = Uri.parse(
-                            "vnd.youtube:" +
-                                    item.sourceVideo
-                        )
-                        transitionToApp(context, data)
-                    }
-                    if (item.postType == PostType.AD_POST) {
-                        val dataOfAd = Uri.parse(item.sourceAd)
-                        transitionToApp(context, dataOfAd)
-                    }
-                }
-            }
         }
     }
 
@@ -173,7 +149,7 @@ fun isCheckedByUser(
 ) {
     if (isChecked) {
         imageView.setImageResource(imageRed)
-        textView.setTextColor(getColor(context, R.color.colorRed))
+        textView.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
     }
 }
 
@@ -187,9 +163,9 @@ fun isCheckedByUser(
 ) {
     if (isChecked) {
         imageView.setImageResource(imageRed)
-        textView.setTextColor(getColor(context, R.color.colorRed))
+        textView.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
     } else {
         imageView.setImageResource(imageGray)
-        textView.setTextColor(getColor(context, android.R.color.tab_indicator_text))
+        textView.setTextColor(ContextCompat.getColor(context, android.R.color.tab_indicator_text))
     }
 }
